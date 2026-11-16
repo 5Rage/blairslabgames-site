@@ -437,3 +437,165 @@ body.nav-open .nav-close { display: inline-grid; }
 
 
 .no-sidebar .article-wide .article-col, .no-sidebar .pager { margin-left: auto; margin-right: auto; }
+
+/* =====================================================================
+   Look pass: full-bleed art, bigger cards, title banners, gentle motion.
+   Later rules here override the base styles above.
+   ===================================================================== */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 88% -6%, color-mix(in srgb, var(--accent-raw) 16%, transparent), transparent 70%),
+    radial-gradient(720px 520px at -6% 104%, color-mix(in srgb, var(--accent-raw) 10%, transparent), transparent 70%);
+}
+.container { max-width: 1200px; }
+.article-wide { max-width: 1100px; }
+.band > .inner, .hero-inner, .site-footer .inner { max-width: 1320px; }
+@media (min-width: 960px) { .layout.has-sidebar { max-width: 1520px; } }
+.topbar { border-bottom-color: color-mix(in srgb, var(--accent-raw) 35%, var(--border)); }
+
+/* ---------- Home hero: cross-fading key art ---------- */
+.hero { background: #0b0e17; min-height: min(82vh, 760px); display: grid; align-items: end; border-bottom: 0; }
+.hero-slides { position: absolute; inset: 0; z-index: -3; }
+.hero-slides img {
+  position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; opacity: 0;
+  animation: heroFade calc(var(--n, 6) * 6s) linear infinite; animation-delay: calc(var(--i, 0) * 6s);
+}
+@keyframes heroFade {
+  0% { opacity: 0; transform: scale(1.03); }
+  4% { opacity: 1; }
+  16% { opacity: 1; }
+  21% { opacity: 0; transform: scale(1.12); }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    linear-gradient(0deg, var(--bg) 0%, rgba(8, 10, 18, 0) 34%),
+    linear-gradient(90deg, rgba(8, 10, 18, .90) 0%, rgba(8, 10, 18, .62) 42%, rgba(8, 10, 18, .12) 100%);
+}
+.hero-embers { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.ember {
+  position: absolute; bottom: -12px; left: var(--x); width: var(--s); height: var(--s); border-radius: 50%;
+  background: #ffd98a; box-shadow: 0 0 10px 3px rgba(255, 200, 110, .55); opacity: 0;
+  animation: emberRise var(--d) linear infinite; animation-delay: calc(var(--w) * -1s);
+}
+@keyframes emberRise {
+  0% { transform: translate(0, 0); opacity: 0; }
+  12% { opacity: .9; }
+  70% { opacity: .55; }
+  100% { transform: translate(46px, -78vh); opacity: 0; }
+}
+.hero-inner { padding-top: 120px; padding-bottom: 72px; width: 100%; }
+.hero .eyebrow { color: #f0c878; }
+.hero h1 { font-size: clamp(2.6rem, 8vw, 5.4rem); color: #fff; max-width: 13ch; text-shadow: 0 4px 30px rgba(0, 0, 0, .65); letter-spacing: -.01em; }
+.hero .lead { color: #efe4c8; font-size: clamp(1.15rem, 2.6vw, 1.5rem); text-shadow: 0 2px 14px rgba(0, 0, 0, .7); }
+.hero .btn { min-height: 52px; padding: 10px 26px; font-size: 1.08rem; box-shadow: 0 10px 30px -8px rgba(226, 180, 92, .7); }
+.hero .btn-ghost { color: #fff; border-color: rgba(255, 255, 255, .6); box-shadow: none; background: rgba(8, 10, 18, .35); }
+.hero .btn-ghost:hover { background: rgba(255, 255, 255, .16); border-color: #fff; }
+@media (min-width: 900px) { .hero-inner { padding-bottom: 110px; } }
+.intro-band .inner { font-size: 1.15rem; }
+.section-title { font-size: clamp(1.9rem, 4.6vw, 2.8rem); }
+.section-title::after, .group-title::after {
+  content: ""; display: block; width: 72px; height: 4px; border-radius: 4px; margin-top: 10px;
+  background: linear-gradient(90deg, var(--accent-raw), transparent);
+}
+.group-title { border-bottom: 0; font-size: 1.6rem; margin-top: 44px; }
+
+/* ---------- Game cards ---------- */
+.game-grid { gap: 28px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); }
+.game-card { border-radius: 22px; border-top: 3px solid var(--card-raw); }
+.game-card:hover, .game-card:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 60px -22px var(--card-raw), 0 12px 30px rgba(0, 0, 0, .4);
+}
+.card-media { aspect-ratio: 16 / 9; }
+.card-media img { transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+.game-card:hover .card-media img, .game-card:focus-within .card-media img { transform: scale(1.08); }
+.card-media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(0deg, var(--surface) 0%, transparent 38%); }
+.card-media .badge { z-index: 1; }
+.card-body { padding: 6px 24px 24px; }
+.card-body h3 { font-size: 1.75rem; }
+.card-body p { font-size: 1.05rem; }
+
+/* ---------- Page cards ---------- */
+.cards { gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); }
+.page-card { border-radius: 16px; }
+.page-card:hover, .page-card:focus-within { transform: translateY(-4px); box-shadow: 0 18px 40px -20px var(--accent-raw), 0 8px 22px rgba(0, 0, 0, .3); }
+.page-card .thumb { position: relative; }
+.page-card .thumb img { transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.page-card:hover .thumb img, .page-card:focus-within .thumb img { transform: scale(1.07); }
+.thumb-fallback { aspect-ratio: 16 / 6 !important; }
+.thumb-fallback img { transform: scale(1.9); filter: saturate(.85) brightness(.7); }
+.page-card:hover .thumb-fallback img, .page-card:focus-within .thumb-fallback img { transform: scale(2.02); }
+.thumb-fallback::after { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, color-mix(in srgb, var(--accent-raw) 45%, transparent), rgba(8, 10, 18, .35)); }
+
+/* ---------- Game hub hero ---------- */
+.hub-hero { border-radius: 26px; box-shadow: 0 30px 70px -34px var(--accent-raw); }
+.hub-hero > img { animation: kenburns 32s ease-in-out infinite alternate; }
+@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14) translate(-1.5%, -1%); } }
+.hub-hero::before { background: linear-gradient(0deg, rgba(8, 10, 18, .94), rgba(8, 10, 18, .35) 62%, rgba(8, 10, 18, .1)); }
+.hub-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--accent-raw), transparent 75%); }
+.hub-hero-inner { padding-top: 200px; }
+.hub-hero h1 { font-size: clamp(2.4rem, 7vw, 4.4rem); text-shadow: 0 4px 26px rgba(0, 0, 0, .6); }
+.hub-hero .tagline { font-size: clamp(1.15rem, 2.4vw, 1.45rem); }
+@media (min-width: 760px) { .hub-hero-inner { padding: 300px 48px 44px; } }
+.quick a { transition: transform .2s, border-color .2s, background .2s; }
+.quick a:hover { transform: translateY(-2px); background: var(--surface-2); }
+
+/* ---------- Article title banner ---------- */
+.page-banner {
+  position: relative; isolation: isolate; overflow: hidden; border-radius: 22px; border: 1px solid var(--border); margin: 0 0 30px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent-raw) 38%, #0b0e17), #0b0e17);
+}
+.pb-bg { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); max-width: none; object-fit: cover; z-index: -2; filter: blur(16px) saturate(1.25); }
+.page-banner::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8, 10, 18, .90), rgba(8, 10, 18, .58) 60%, rgba(8, 10, 18, .4)); }
+.page-banner::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--accent-raw), transparent 75%); }
+.pb-inner { padding: 26px 22px 28px; }
+@media (min-width: 760px) { .pb-inner { padding: 40px 44px 42px; } }
+.page-banner .page-title { color: #fff; font-size: clamp(2.2rem, 6vw, 3.6rem); text-shadow: 0 3px 22px rgba(0, 0, 0, .6); margin-bottom: 12px; }
+.page-banner .page-lead { color: #efe4c8; max-width: 62ch; margin-bottom: 0; }
+.page-banner .page-meta { color: #cfc5ac; margin: 14px 0 0; }
+.page-banner .crumbs, .page-banner .crumbs a { color: #d9cfb6; }
+.page-banner .crumbs a:hover { color: #fff; }
+
+/* ---------- Article body ---------- */
+.prose h2 { padding-bottom: .3em; border-bottom: 1px solid var(--border); position: relative; }
+.prose h2::after { content: ""; position: absolute; left: 0; bottom: -1px; width: 64px; height: 3px; border-radius: 3px; background: var(--accent-raw); }
+.prose thead th { border-bottom: 2px solid var(--accent-raw); }
+.prose figure img, .prose img { border-radius: 16px; box-shadow: 0 18px 44px -22px rgba(0, 0, 0, .7); cursor: zoom-in; transition: transform .25s, box-shadow .25s; }
+.prose a img { cursor: pointer; }
+.prose figure img:hover, .prose img:hover { transform: translateY(-2px); box-shadow: 0 24px 54px -22px var(--accent-raw); }
+.pager a { transition: transform .2s, border-color .2s; }
+.pager a:hover { transform: translateY(-2px); }
+.world-teaser { border-radius: 26px; }
+.community { border-style: solid; background: radial-gradient(ellipse 70% 120% at 50% 0%, var(--hero-glow), transparent 65%), var(--surface); }
+
+/* ---------- Scroll reveal and picture zoom (classes are added by site.js) ---------- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .7, .2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+.zoom { position: fixed; inset: 0; z-index: 90; display: grid; place-items: center; padding: 3vmin; background: rgba(5, 7, 12, .92); cursor: zoom-out; animation: zoomIn .18s ease; }
+.zoom img { max-width: 100%; max-height: 94vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0, 0, 0, .7); }
+@keyframes zoomIn { from { opacity: 0; } to { opacity: 1; } }
+body.zoom-open { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slides img:first-child { opacity: 1; }
+  .ember { display: none; }
+}
+@media print { .page-banner { border: 0; background: none; } .pb-bg, .hero-slides, .hero-embers { display: none; } .page-banner .page-title, .page-banner .page-lead { color: #000; text-shadow: none; } }
+
+/* Hub hero, second pass: the key art often has the game's name painted in, so show the picture whole
+   and put the heading in a bar under it instead of on top of it. */
+.hub-hero { background: #0b0e17; }
+.hub-hero > img { position: static; display: block; width: 100%; height: auto; max-height: 600px; object-fit: cover; z-index: auto; animation: none; }
+.hub-hero::before { display: none; }
+.hub-hero-inner, .hub-hero.no-img .hub-hero-inner {
+  position: relative; margin-top: -80px; padding: 96px 24px 30px;
+  background: linear-gradient(180deg, rgba(11, 14, 23, 0) 0, #0b0e17 80px, color-mix(in srgb, var(--accent-raw) 20%, #0b0e17) 100%);
+}
+.hub-hero.no-img .hub-hero-inner { margin-top: 0; padding-top: 56px; }
+@media (min-width: 760px) { .hub-hero-inner, .hub-hero.no-img .hub-hero-inner { padding: 100px 48px 40px; } .hub-hero.no-img .hub-hero-inner { padding-top: 70px; } }
+
+.article-col { max-width: 78ch; }
+.pager { max-width: 78ch; }

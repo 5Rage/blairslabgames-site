@@ -154,3 +154,41 @@
     if (form) form.addEventListener('submit', function (e) { e.preventDefault(); });
   }
 })();
+
+/* Scroll reveal and picture zoom. Both are extras: the page works without them. */
+(function () {
+  var doc = document;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !reduce) {
+    var items = doc.querySelectorAll('.game-card, .page-card, .world-teaser, .community, .prose figure, .group-title');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(items, function (el, n) {
+      el.classList.add('reveal');
+      el.style.transitionDelay = (n % 3) * 70 + 'ms';
+      io.observe(el);
+    });
+  }
+
+  var box = null;
+  function closeBox() { if (box) { box.remove(); box = null; doc.body.classList.remove('zoom-open'); } }
+  doc.addEventListener('click', function (e) {
+    var t = e.target;
+    if (box) { closeBox(); return; }
+    if (!t || t.tagName !== 'IMG' || !t.closest('.prose') || t.closest('a')) return;
+    box = doc.createElement('div');
+    box.className = 'zoom';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', t.alt || 'Picture');
+    var img = doc.createElement('img');
+    img.src = t.currentSrc || t.src;
+    img.alt = t.alt || '';
+    box.appendChild(img);
+    doc.body.appendChild(box);
+    doc.body.classList.add('zoom-open');
+  });
+  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBox(); });
+})();
