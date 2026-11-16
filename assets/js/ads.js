@@ -18,6 +18,18 @@
   var body = document.body;
   if (!body || body.getAttribute('data-ads') !== '1') return;
 
+  // Visits that start from a game's Wiki button (?src=game) never see ads: the games give a small gift for
+  // opening the wiki, and AdSense does not allow rewarding people for visiting pages that show ads.
+  var fromGame = false;
+  try {
+    if (/[?&]src=game(&|$)/.test(location.search)) sessionStorage.setItem('bl-from-game', '1');
+    fromGame = sessionStorage.getItem('bl-from-game') === '1';
+  } catch (e) { fromGame = /[?&]src=game(&|$)/.test(location.search); }
+  if (fromGame) {
+    Array.prototype.forEach.call(document.querySelectorAll('.ad-slot, #consent-banner'), function (el) { el.remove(); });
+    return;
+  }
+
   var CLIENT = body.getAttribute('data-ad-client') || '';
   var KEY = 'bl-ad-consent'; // 'granted' | 'denied'
   var scriptAdded = false;
