@@ -599,3 +599,6 @@ body.zoom-open { overflow: hidden; }
 
 .article-col { max-width: 78ch; }
 .pager { max-width: 78ch; }
+
+.genre { display: block; font-size: .78rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; color: var(--card-accent, var(--accent)); margin-bottom: 4px; }
+.hub-hero .genre { color: #f0c878; }
