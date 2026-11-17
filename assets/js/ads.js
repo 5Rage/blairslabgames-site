@@ -1,4 +1,4 @@
-/* Ads and consent for blairslabgames.co.nz.
+/* Ads and consent for this site.
  *
  * STATUS: STUB. Ads are OFF by default (site.config.json -> "adsEnabled": false).
  * With ads off the build emits no ad slots and no consent banner, and this file does nothing.

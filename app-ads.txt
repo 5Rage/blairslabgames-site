@@ -1,1 +1,1 @@
-# app-ads.txt placeholder. Add authorised sellers for BlairsLab apps here (for example the AdMob line).
+# app-ads.txt placeholder. Add authorised sellers for our apps here (for example the AdMob line).

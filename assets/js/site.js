@@ -1,4 +1,4 @@
-/* BlairsLab Games site: nav drawer, theme toggle, search, small helpers. No dependencies. */
+/* Evenwold Wiki site: nav drawer, theme toggle, search, small helpers. No dependencies. */
 (function () {
   'use strict';
   var doc = document, root = doc.documentElement, body = doc.body;
